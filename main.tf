@@ -70,6 +70,7 @@ resource "hcloud_server" "srv13" {
   location = "hel1"
   firewall_ids = [
     hcloud_firewall.fw4_base.id,
+    hcloud_firewall.srv13_fw4_servizi.id,
     hcloud_firewall.fw6_base.id
   ]
 }
@@ -281,6 +282,42 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
     port = 123
     source_ips = [
       "::0/0"
+    ]
+  }
+}
+
+resource "hcloud_firewall" "srv13_fw4_servizi" {
+  name = "srv13_fw4_servizi"
+  rule {
+    direction = "in"
+    protocol = "tcp"
+    port = 25
+    source_ips = [
+      "0.0.0.0/0"
+    ]
+  }
+  rule {
+    direction = "in"
+    protocol = "tcp"
+    port = 465
+    source_ips = [
+      "0.0.0.0/0"
+    ]
+  }
+  rule {
+    direction = "in"
+    protocol = "tcp"
+    port = 53
+    source_ips = [
+      "0.0.0.0/0"
+    ]
+  }
+  rule {
+    direction = "in"
+    protocol = "udp"
+    port = 53
+    source_ips = [
+      "0.0.0.0/0"
     ]
   }
 }
