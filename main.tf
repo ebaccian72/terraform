@@ -137,14 +137,6 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
   rule {
     direction = "in"
     protocol = "tcp"
-    port = 465
-    source_ips = [
-      "0.0.0.0/0"
-    ]
-  }
-  rule {
-    direction = "in"
-    protocol = "tcp"
     port = 587
     source_ips = [
       "0.0.0.0/0"
@@ -215,14 +207,6 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
     direction = "in"
     protocol = "tcp"
     port = 25
-    source_ips = [
-      "::0/0"
-    ]
-  }
-  rule {
-    direction = "in"
-    protocol = "tcp"
-    port = 465
     source_ips = [
       "::0/0"
     ]
