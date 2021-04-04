@@ -59,7 +59,8 @@ resource "hcloud_server" "srv11" {
     hcloud_firewall.fw4_base.id,
     hcloud_firewall.srv11_fw4_servizi.id,
     hcloud_firewall.fw6_base.id,
-    hcloud_firewall.srv11_fw6_servizi.id
+    hcloud_firewall.srv11_fw6_servizi.id,
+    hcloud_firewall.srv11_fw6_adm.id
   ]
 }
 
@@ -272,6 +273,18 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
     direction = "in"
     protocol = "tcp"
     port = 443
+    source_ips = [
+      "::0/0"
+    ]
+  }
+}
+
+resource "hcloud_firewall" "srv11_fw6_adm" {
+  name = "srv11_fw6_adm"
+    rule {
+    direction = "in"
+    protocol = "tcp"
+    port = 5432
     source_ips = [
       "::0/0"
     ]
