@@ -2,7 +2,7 @@ terraform {
   required_providers {
     hcloud = {
       source = "hetznercloud/hcloud"
-      version = "1.25.2"
+      version = "1.26.0"
     }
 
     vault = {
@@ -29,12 +29,12 @@ provider "vault" {
 
 ###
 
-data "vault_generic_secret" "hetzner_prova" {
-  path = "kv/hetzner/prova"
+data "vault_generic_secret" "hetzner_megane" {
+  path = "kv/hetzner/megane"
 }
 
 provider "hcloud" {
-  token = data.vault_generic_secret.hetzner_prova.data [ "radice" ]
+  token = data.vault_generic_secret.hetzner_megane.data [ "radice" ]
 }
 
 ###
@@ -62,6 +62,11 @@ resource "hcloud_server" "srv11" {
     hcloud_firewall.srv11_fw6_servizi.id,
     hcloud_firewall.srv11_fw6_adm.id
   ]
+  lifecycle {
+    ignore_changes = [
+      image
+    ]
+  }
 }
 
 resource "hcloud_server" "srv13" {
@@ -210,7 +215,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
     protocol = "tcp"
     port = 25
     source_ips = [
-      "::0/0"
+      "::/0"
     ]
   }
   rule {
@@ -218,7 +223,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
     protocol = "tcp"
     port = 465
     source_ips = [
-      "::0/0"
+      "::/0"
     ]
   }
   rule {
@@ -226,7 +231,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
     protocol = "tcp"
     port = 587
     source_ips = [
-      "::0/0"
+      "::/0"
     ]
   }
   rule {
@@ -234,7 +239,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
     protocol = "tcp"
     port = 110
     source_ips = [
-      "::0/0"
+      "::/0"
     ]
   }
     rule {
@@ -242,7 +247,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
     protocol = "tcp"
     port = 995
     source_ips = [
-      "::0/0"
+      "::/0"
     ]
   }
   rule {
@@ -250,7 +255,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
     protocol = "tcp"
     port = 53
     source_ips = [
-      "::0/0"
+      "::/0"
     ]
   }
     rule {
@@ -258,7 +263,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
     protocol = "udp"
     port = 53
     source_ips = [
-      "::0/0"
+      "::/0"
     ]
   }
   rule {
@@ -266,7 +271,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
     protocol = "tcp"
     port = 80
     source_ips = [
-      "::0/0"
+      "::/0"
     ]
   }
     rule {
@@ -274,7 +279,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
     protocol = "tcp"
     port = 443
     source_ips = [
-      "::0/0"
+      "::/0"
     ]
   }
 }
@@ -286,7 +291,7 @@ resource "hcloud_firewall" "srv11_fw6_adm" {
     protocol = "tcp"
     port = 5432
     source_ips = [
-      "::0/0"
+      "::/0"
     ]
   }
   rule {
@@ -294,7 +299,7 @@ resource "hcloud_firewall" "srv11_fw6_adm" {
     protocol = "udp"
     port = 123
     source_ips = [
-      "::0/0"
+      "::/0"
     ]
   }
 }
@@ -352,35 +357,26 @@ resource "hcloud_volume" "volume_2" {
 ###
 
 resource "hcloud_floating_ip" "ip4_1o" {
-  name = "1o_ip4"
+  name = "ip4_1o"
   type = "ipv4"
   home_location = "nbg1"
+  description   = "primario"
+  server_id = hcloud_server.srv11.id
 }
 
 resource "hcloud_floating_ip" "net6_1o" {
-  name = "1o_net6"
+  name = "net6_1o"
   type = "ipv6"
   home_location = "nbg1"
+  description   = "primario"
+  server_id = hcloud_server.srv11.id
 }
 
 resource "hcloud_floating_ip" "ip4_2o" {
-  name = "2o_ip4"
+  name = "ip4_2o"
   type = "ipv4"
-  home_location = "hel1"
-}
-
-resource "hcloud_floating_ip_assignment" "ip4_1o_set" {
-  floating_ip_id = hcloud_floating_ip.ip4_1o.id
-  server_id = hcloud_server.srv11.id
-}
-
-resource "hcloud_floating_ip_assignment" "net6_1o_set" {
-  floating_ip_id = hcloud_floating_ip.net6_1o.id
-  server_id = hcloud_server.srv11.id
-}
-
-resource "hcloud_floating_ip_assignment" "ip4_2o_set" {
-  floating_ip_id = hcloud_floating_ip.ip4_2o.id
+  home_location = "nbg1"
+  description   = "secondario"
   server_id = hcloud_server.srv13.id
 }
 
