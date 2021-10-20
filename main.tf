@@ -39,13 +39,38 @@ provider "hcloud" {
 
 ###
 
-data "vault_generic_secret" "enrico_at_jigen_megane_eb" {
-  path = "kv/ssh-client/enrico@jigen.megane.eb"
+data "vault_generic_secret" "ansible_key_path" {
+  path = "kv/ssh-client/ansible@cfg.jigen.megane.eb+ed25519"
 }
 
-resource "hcloud_ssh_key" "enrico_2018" {
+resource "hcloud_ssh_key" "ansible_key" {
+  name = "Ansible, 2018"
+  public_key = data.vault_generic_secret.ansible_key_path.data [ "pub" ]
+}
+
+data "vault_generic_secret" "enrico_general_key_path" {
+  path = "kv/ssh-client/enrico@jigen.megane.eb+ed25519"
+}
+
+resource "hcloud_ssh_key" "enrico_general_key" {
   name = "Enrico Baccianini, 2018"
-  public_key = data.vault_generic_secret.enrico_at_jigen_megane_eb.data [ "pub" ]
+  public_key = data.vault_generic_secret.enrico_general_key_path.data [ "pub" ]
+}
+
+data "vault_generic_secret" "enrico_main_key_path" {
+  path = "kv/ssh-client/enrico@jigen.megane.eb+ed25519-sk"
+}
+resource "hcloud_ssh_key" "enrico_main_key" {
+  name = "Enrico Baccianini, 2021 - 5060408461426"
+  public_key = data.vault_generic_secret.enrico_main_key_path.data [ "pub" ]
+}
+
+data "vault_generic_secret" "enrico_backup_key_path" {
+  path = "kv/ssh-client/enrico@kosmos.megane.eb+ed25519-sk"
+}
+resource "hcloud_ssh_key" "enrico_backup_key" {
+  name = "Enrico Baccianini, emergenza - 16016883"
+  public_key = data.vault_generic_secret.enrico_backup_key_path.data [ "pub" ]
 }
 
 ###
@@ -55,6 +80,8 @@ resource "hcloud_server" "srv11" {
   image = "ubuntu-20.04"
   server_type = "cx31"
   location = "nbg1"
+  keep_disk = true
+
   firewall_ids = [ 
     hcloud_firewall.fw4_base.id,
     hcloud_firewall.srv11_fw4_servizi.id,
@@ -62,6 +89,7 @@ resource "hcloud_server" "srv11" {
     hcloud_firewall.srv11_fw6_servizi.id,
     hcloud_firewall.srv11_fw6_adm.id
   ]
+
   lifecycle {
     ignore_changes = [
       image
@@ -74,6 +102,8 @@ resource "hcloud_server" "srv13" {
   image = "ubuntu-20.04"
   server_type = "cx11"
   location = "hel1"
+  keep_disk = true
+
   firewall_ids = [
     hcloud_firewall.fw4_base.id,
     hcloud_firewall.srv13_fw4_servizi.id,
@@ -87,6 +117,7 @@ resource "hcloud_firewall" "fw4_base" {
   name = "fw4_base"
 
   rule {
+    # SSH
     direction = "in"
     protocol = "tcp"
     port = 48840
@@ -95,6 +126,7 @@ resource "hcloud_firewall" "fw4_base" {
     ]
   }
   rule {
+    # ICMP
     direction = "in"
     protocol = "icmp"
     source_ips = [
@@ -107,6 +139,7 @@ resource "hcloud_firewall" "fw6_base" {
   name = "fw6_base"
 
   rule {
+    # SSH
     direction = "in"
     protocol = "tcp"
     port = 48840
@@ -115,6 +148,7 @@ resource "hcloud_firewall" "fw6_base" {
     ]
   }
   rule {
+    # ICMP
     direction = "in"
     protocol = "icmp"
     source_ips = [
@@ -126,6 +160,7 @@ resource "hcloud_firewall" "fw6_base" {
 resource "hcloud_firewall" "srv11_fw4_servizi" {
   name = "srv11_fw4_servizi"
   rule {
+    # SMTP
     direction = "in"
     protocol = "tcp"
     port = 25
@@ -134,6 +169,7 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
     ]
   }
   rule {
+    # SMTPS
     direction = "in"
     protocol = "tcp"
     port = 465
@@ -142,6 +178,7 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
     ]
   }
   rule {
+    # SMTP MSA
     direction = "in"
     protocol = "tcp"
     port = 587
@@ -150,6 +187,7 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
     ]
   }
   rule {
+    # POP3
     direction = "in"
     protocol = "tcp"
     port = 110
@@ -157,7 +195,8 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
       "0.0.0.0/0"
     ]
   }
-    rule {
+  rule {
+    # POP3S
     direction = "in"
     protocol = "tcp"
     port = 995
@@ -166,6 +205,16 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
     ]
   }
   rule {
+    # IMAPS
+    direction = "in"
+    protocol = "tcp"
+    port = 993
+    source_ips = [
+      "0.0.0.0/0"
+    ]
+  }
+  rule {
+    # DNS
     direction = "in"
     protocol = "tcp"
     port = 53
@@ -173,7 +222,8 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
       "0.0.0.0/0"
     ]
   }
-    rule {
+  rule {
+    # DNS
     direction = "in"
     protocol = "udp"
     port = 53
@@ -182,6 +232,7 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
     ]
   }
   rule {
+    # HTTP
     direction = "in"
     protocol = "tcp"
     port = 80
@@ -190,6 +241,7 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
     ]
   }
   rule {
+    # HTTPS
     direction = "in"
     protocol = "tcp"
     port = 443
@@ -198,6 +250,7 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
     ]
   }
   rule {
+    # nonnocamX
     direction = "in"
     protocol = "tcp"
     port = "48088-48554"
@@ -211,6 +264,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
   name = "srv11_fw6_servizi"
 
   rule {
+    # SMTP
     direction = "in"
     protocol = "tcp"
     port = 25
@@ -219,6 +273,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
     ]
   }
   rule {
+    # SMTP
     direction = "in"
     protocol = "tcp"
     port = 465
@@ -227,6 +282,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
     ]
   }
   rule {
+    # SMTP MSA
     direction = "in"
     protocol = "tcp"
     port = 587
@@ -235,6 +291,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
     ]
   }
   rule {
+    # POP3
     direction = "in"
     protocol = "tcp"
     port = 110
@@ -242,7 +299,8 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
       "::/0"
     ]
   }
-    rule {
+  rule {
+    # POP3S
     direction = "in"
     protocol = "tcp"
     port = 995
@@ -251,6 +309,16 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
     ]
   }
   rule {
+    # IMAPS
+    direction = "in"
+    protocol = "tcp"
+    port = 993
+    source_ips = [
+      "::/0"
+    ]
+  }
+  rule {
+    # DNS
     direction = "in"
     protocol = "tcp"
     port = 53
@@ -258,7 +326,8 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
       "::/0"
     ]
   }
-    rule {
+  rule {
+    # DNS
     direction = "in"
     protocol = "udp"
     port = 53
@@ -267,6 +336,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
     ]
   }
   rule {
+    # HTTP
     direction = "in"
     protocol = "tcp"
     port = 80
@@ -274,7 +344,8 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
       "::/0"
     ]
   }
-    rule {
+  rule {
+    # HTTPS
     direction = "in"
     protocol = "tcp"
     port = 443
@@ -286,7 +357,8 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
 
 resource "hcloud_firewall" "srv11_fw6_adm" {
   name = "srv11_fw6_adm"
-    rule {
+  rule {
+    # PostgreSQL
     direction = "in"
     protocol = "tcp"
     port = 5432
@@ -295,6 +367,7 @@ resource "hcloud_firewall" "srv11_fw6_adm" {
     ]
   }
   rule {
+    # NTP
     direction = "in"
     protocol = "udp"
     port = 123
@@ -307,6 +380,7 @@ resource "hcloud_firewall" "srv11_fw6_adm" {
 resource "hcloud_firewall" "srv13_fw4_servizi" {
   name = "srv13_fw4_servizi"
   rule {
+    # SMTP
     direction = "in"
     protocol = "tcp"
     port = 25
@@ -315,6 +389,7 @@ resource "hcloud_firewall" "srv13_fw4_servizi" {
     ]
   }
   rule {
+    # SMTP
     direction = "in"
     protocol = "tcp"
     port = 465
@@ -323,6 +398,7 @@ resource "hcloud_firewall" "srv13_fw4_servizi" {
     ]
   }
   rule {
+    # DNS
     direction = "in"
     protocol = "tcp"
     port = 53
@@ -331,6 +407,7 @@ resource "hcloud_firewall" "srv13_fw4_servizi" {
     ]
   }
   rule {
+    # DNS
     direction = "in"
     protocol = "udp"
     port = 53
