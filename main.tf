@@ -314,7 +314,11 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
     protocol = "tcp"
     port = 993
     source_ips = [
+<<<<<<< HEAD
       "::/0"
+=======
+      "0.0.0.0/0"
+>>>>>>> 36ec1a4753f229d60a9a564b444666e63a85bcc9
     ]
   }
   rule {
