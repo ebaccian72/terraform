@@ -16,3 +16,4 @@
 azure/
 hcloud
 terraform.tfstate*
+.vault-token
