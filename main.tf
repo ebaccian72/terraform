@@ -7,7 +7,7 @@ terraform {
 
     vault = {
       source = "hashicorp/vault"
-      version = "2.19.0"
+      version = "2.24.1"
     }
   }
 }
@@ -83,6 +83,7 @@ resource "hcloud_server" "srv11" {
   keep_disk = true
   delete_protection = true
   rebuild_protection = true
+  #ssh_keys = [ hcloud_ssh_key.ansible_key.name ]
 
   firewall_ids = [ 
     hcloud_firewall.fw4_base.id,
@@ -107,6 +108,7 @@ resource "hcloud_server" "srv13" {
   keep_disk = true
   delete_protection = true
   rebuild_protection = true
+  #ssh_keys = [ hcloud_ssh_key.ansible_key.name ]
 
   firewall_ids = [
     hcloud_firewall.fw4_base.id,
@@ -456,28 +458,28 @@ resource "hcloud_volume" "volume_3" {
 ###
 
 resource "hcloud_floating_ip" "ip4_1o" {
+  description   = "primario IPv4"
   name = "ip4_1o"
   type = "ipv4"
-  home_location = "nbg1"
-  description   = "primario"
+  home_location = "nbg1"  
   delete_protection = true
   server_id = hcloud_server.srv11.id
 }
 
 resource "hcloud_floating_ip" "net6_1o" {
+  description   = "primario NET6"
   name = "net6_1o"
   type = "ipv6"
   home_location = "nbg1"
-  description   = "primario"
   delete_protection = true
   server_id = hcloud_server.srv11.id
 }
 
 resource "hcloud_floating_ip" "ip4_2o" {
+  description   = "secondario IPv4"
   name = "ip4_2o"
   type = "ipv4"
-  home_location = "nbg1"
-  description   = "secondario"
+  home_location = "nbg1"  
   delete_protection = true
   server_id = hcloud_server.srv13.id
 }
