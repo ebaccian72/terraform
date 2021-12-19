@@ -2,12 +2,12 @@ terraform {
   required_providers {
     hcloud = {
       source = "hetznercloud/hcloud"
-      version = "1.31.1"
+      version = "1.32.2"
     }
 
     vault = {
       source = "hashicorp/vault"
-      version = "2.24.1"
+      version = "3.0.1"
     }
   }
 }
@@ -83,7 +83,7 @@ resource "hcloud_server" "srv11" {
   keep_disk = true
   delete_protection = true
   rebuild_protection = true
-  #ssh_keys = [ hcloud_ssh_key.ansible_key.name ]
+  ssh_keys = [ hcloud_ssh_key.ansible_key.name ]
 
   firewall_ids = [ 
     hcloud_firewall.fw4_base.id,
@@ -95,7 +95,8 @@ resource "hcloud_server" "srv11" {
 
   lifecycle {
     ignore_changes = [
-      image
+      image,
+      ssh_keys
     ]
   }
 }
@@ -108,13 +109,20 @@ resource "hcloud_server" "srv13" {
   keep_disk = true
   delete_protection = true
   rebuild_protection = true
-  #ssh_keys = [ hcloud_ssh_key.ansible_key.name ]
+  ssh_keys = [ hcloud_ssh_key.ansible_key.name ]
 
   firewall_ids = [
     hcloud_firewall.fw4_base.id,
     hcloud_firewall.srv13_fw4_servizi.id,
-    hcloud_firewall.fw6_base.id
+    hcloud_firewall.fw6_base.id,
+    hcloud_firewall.srv13_fw6_adm.id
   ]
+
+  lifecycle {
+    ignore_changes = [
+      ssh_keys
+    ]
+  }
 }
 
 ###
@@ -153,6 +161,7 @@ resource "hcloud_firewall" "fw6_base" {
       "::/0"
     ]
   }
+
   rule {
     description = "ICMP"
     direction = "in"
@@ -174,6 +183,7 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
       "0.0.0.0/0"
     ]
   }
+
   rule {
     description = "SMTPS"
     direction = "in"
@@ -183,6 +193,7 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
       "0.0.0.0/0"
     ]
   }
+
   rule {
     description = "SMTP MSA"
     direction = "in"
@@ -192,6 +203,7 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
       "0.0.0.0/0"
     ]
   }
+
   rule {
     description = "POP3"
     direction = "in"
@@ -201,6 +213,7 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
       "0.0.0.0/0"
     ]
   }
+
   rule {
     description = "POP3S"
     direction = "in"
@@ -210,6 +223,7 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
       "0.0.0.0/0"
     ]
   }
+
   rule {
     description = "IMAPS"
     direction = "in"
@@ -219,6 +233,7 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
       "0.0.0.0/0"
     ]
   }
+
   rule {
     description = "DNS"
     direction = "in"
@@ -228,6 +243,7 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
       "0.0.0.0/0"
     ]
   }
+
   rule {
     description = "DNS"
     direction = "in"
@@ -237,6 +253,7 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
       "0.0.0.0/0"
     ]
   }
+
   rule {
     description = "HTTP"
     direction = "in"
@@ -246,6 +263,7 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
       "0.0.0.0/0"
     ]
   }
+
   rule {
     description = "HTTPS"
     direction = "in"
@@ -255,6 +273,7 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
       "0.0.0.0/0"
     ]
   }
+
   rule {
     description = "nonnocamX"
     direction = "in"
@@ -278,6 +297,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
       "::/0"
     ]
   }
+
   rule {
     description = "SMTP"
     direction = "in"
@@ -287,6 +307,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
       "::/0"
     ]
   }
+
   rule {
     description = "SMTP MSA"
     direction = "in"
@@ -296,6 +317,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
       "::/0"
     ]
   }
+
   rule {
     description = "POP3"
     direction = "in"
@@ -305,6 +327,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
       "::/0"
     ]
   }
+
   rule {
     description = "POP3S"
     direction = "in"
@@ -314,6 +337,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
       "::/0"
     ]
   }
+
   rule {
     description = "IMAPS"
     direction = "in"
@@ -323,6 +347,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
       "::/0"
     ]
   }
+
   rule {
     description = "DNS"
     direction = "in"
@@ -332,6 +357,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
       "::/0"
     ]
   }
+
   rule {
     description = "DNS"
     direction = "in"
@@ -341,6 +367,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
       "::/0"
     ]
   }
+
   rule {
     description = "HTTP"
     direction = "in"
@@ -350,6 +377,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
       "::/0"
     ]
   }
+
   rule {
     description = "HTTPS"
     direction = "in"
@@ -372,6 +400,7 @@ resource "hcloud_firewall" "srv11_fw6_adm" {
       "::/0"
     ]
   }
+
   rule {
     description = "NTP"
     direction = "in"
@@ -379,6 +408,15 @@ resource "hcloud_firewall" "srv11_fw6_adm" {
     port = 123
     source_ips = [
       "::/0"
+    ]
+  }
+
+  rule {
+    description = "gw2.srv11 - gw2.rei"
+    direction = "in"
+    protocol = "gre"
+    source_ips = [
+      "2001:b07:6478:c6f6:216:3eff:feeb:1c5/128"
     ]
   }
 }
@@ -394,6 +432,7 @@ resource "hcloud_firewall" "srv13_fw4_servizi" {
       "0.0.0.0/0"
     ]
   }
+
   rule {
     description = "SMTP"
     direction = "in"
@@ -403,6 +442,7 @@ resource "hcloud_firewall" "srv13_fw4_servizi" {
       "0.0.0.0/0"
     ]
   }
+
   rule {
     description = "DNS"
     direction = "in"
@@ -412,6 +452,7 @@ resource "hcloud_firewall" "srv13_fw4_servizi" {
       "0.0.0.0/0"
     ]
   }
+
   rule {
     description = "DNS"
     direction = "in"
@@ -419,6 +460,19 @@ resource "hcloud_firewall" "srv13_fw4_servizi" {
     port = 53
     source_ips = [
       "0.0.0.0/0"
+    ]
+  }
+}
+
+resource "hcloud_firewall" "srv13_fw6_adm" {
+  name = "srv13_fw6_adm"
+  
+  rule {
+    description = "srv13 - gw3.shu"
+    direction = "in"
+    protocol = "gre"
+    source_ips = [
+      "2a02:aa13:a102:6280:216:3eff:feeb:3c7/128"
     ]
   }
 }
