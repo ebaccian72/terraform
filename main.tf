@@ -14,7 +14,13 @@ terraform {
 
 ###
 
-variable "vault_token" {}
+# N.B. Per fare chiedere a Terraform il token di vault ad ogni esecuzione
+#      bisogna scommentare
+#        variable "vault_token" {}
+#      che è qui sotto, inoltre bisogna scommentare
+#        token = var.vault_token
+#      nella definizione del provider "vault"
+#variable "vault_token" {}
 
 #
 # N.B. Il token deve avere la seguente capability:
