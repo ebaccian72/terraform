@@ -7,14 +7,14 @@ terraform {
 
     vault = {
       source = "hashicorp/vault"
-      version = "3.0.1"
+      version = "3.2.1"
     }
   }
 }
 
 ###
 
-variable "vault_token" {}
+#variable "vault_token" {}
 
 #
 # N.B. Il token deve avere la seguente capability:
@@ -24,7 +24,7 @@ variable "vault_token" {}
 #
 provider "vault" {
   address = "https://vault.megane.eb:8443"
-  token = var.vault_token
+  #token = var.vault_token
 }
 
 ###
@@ -472,7 +472,7 @@ resource "hcloud_firewall" "srv13_fw6_adm" {
     direction = "in"
     protocol = "gre"
     source_ips = [
-      "2a02:aa13:a102:6280:216:3eff:feeb:3c7/128"
+      "2a02:aa13:a100:1b00:216:3eff:feeb:3c7/128"
     ]
   }
 }
