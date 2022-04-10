@@ -2,12 +2,12 @@ terraform {
   required_providers {
     hcloud = {
       source = "hetznercloud/hcloud"
-      version = "1.32.2"
+      version = "1.33.1"
     }
 
     vault = {
       source = "hashicorp/vault"
-      version = "3.2.1"
+      version = "3.4.1"
     }
   }
 }
@@ -89,7 +89,12 @@ resource "hcloud_server" "srv11" {
   keep_disk = true
   delete_protection = true
   rebuild_protection = true
-  ssh_keys = [ hcloud_ssh_key.ansible_key.name ]
+  
+  ssh_keys = [ 
+    hcloud_ssh_key.ansible_key.name,
+    hcloud_ssh_key.enrico_general_key.name,
+    hcloud_ssh_key.enrico_main_key.name
+  ]
 
   firewall_ids = [ 
     hcloud_firewall.fw4_base.id,
@@ -115,7 +120,12 @@ resource "hcloud_server" "srv13" {
   keep_disk = true
   delete_protection = true
   rebuild_protection = true
-  ssh_keys = [ hcloud_ssh_key.ansible_key.name ]
+  
+  ssh_keys = [ 
+    hcloud_ssh_key.ansible_key.name,
+    hcloud_ssh_key.enrico_general_key.name,
+    hcloud_ssh_key.enrico_main_key.name
+  ]
 
   firewall_ids = [
     hcloud_firewall.fw4_base.id,
@@ -130,6 +140,33 @@ resource "hcloud_server" "srv13" {
     ]
   }
 }
+
+# resource "hcloud_server" "srv14" {
+#   name = "srv14"
+#   image = "ubuntu-20.04"
+#   server_type = "cx11"
+#   location = "nbg1"
+#   keep_disk = false
+#   delete_protection = false
+#   rebuild_protection = false
+
+#   ssh_keys = [ 
+#     hcloud_ssh_key.ansible_key.name,
+#     hcloud_ssh_key.enrico_general_key.name,
+#     hcloud_ssh_key.enrico_main_key.name
+#   ]
+
+#    # È importante NON mettere alcun firewall perché la VM all'inizio
+#    # ha SSH che ascolta su 22/TCP
+#   firewall_ids = [
+#   ]
+
+#     lifecycle {
+#     ignore_changes = [
+#       ssh_keys
+#     ]
+#   }
+# }
 
 ###
 
