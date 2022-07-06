@@ -190,6 +190,7 @@ resource "hcloud_server" "srv13" {
 resource "hcloud_firewall" "fw4_base" {
   name = "fw4_base"
 
+  # IN
   rule {
     description = "SSH"
     direction = "in"
@@ -207,11 +208,71 @@ resource "hcloud_firewall" "fw4_base" {
       local.ipv4_everywhere
     ]
   }
-}
+
+  # OUT
+  # rule {
+  #   description = "SSH"
+  #   direction = "out"
+  #   protocol = "tcp"
+  #   port = local.ssh_port
+  #   destination_ips = [
+  #     local.ipv4_everywhere
+  #   ]
+  # }
+  # rule {
+  #   description = "ICMP"
+  #   direction = "out"
+  #   protocol = "icmp"
+  #   destination_ips = [
+  #     local.ipv4_everywhere
+  #   ]
+  # }
+
+  # rule {
+  #   description = "DNS"
+  #   direction = "out"
+  #   protocol = "tcp"
+  #   port = 53
+  #   destination_ips = [
+  #     local.ipv6_everywhere
+  #   ]
+  # }
+
+  # rule {
+  #   description = "DNS"
+  #   direction = "out"
+  #   protocol = "udp"
+  #   port = 53
+  #   destination_ips = [
+  #     local.ipv6_everywhere
+  #   ]
+  # }
+
+  # rule {
+  #   description = "HTTP"
+  #   direction = "out"
+  #   protocol = "tcp"
+  #   port = 80
+  #   destination_ips = [
+  #     local.ipv6_everywhere
+  #   ]
+  # }
+
+  # rule {
+  #   description = "HTTPS"
+  #   direction = "out"
+  #   protocol = "tcp"
+  #   port = 443
+  #   destination_ips = [
+  #     local.ipv6_everywhere
+  #   ]
+  # }
+} # "hcloud_firewall" "fw4_base"
 
 resource "hcloud_firewall" "fw6_base" {
   name = "fw6_base"
 
+  # IN
   rule {
     description = "SSH"
     direction = "in"
@@ -221,7 +282,6 @@ resource "hcloud_firewall" "fw6_base" {
       local.ipv6_everywhere
     ]
   }
-
   rule {
     description = "ICMP"
     direction = "in"
@@ -230,10 +290,72 @@ resource "hcloud_firewall" "fw6_base" {
       local.ipv6_everywhere
     ]
   }
-}
+
+  # OUT
+  # rule {
+  #   description = "SSH"
+  #   direction = "out"
+  #   protocol = "tcp"
+  #   port = local.ssh_port
+  #   destination_ips = [
+  #     local.ipv6_everywhere
+  #   ]
+  # }
+
+  # rule {
+  #   description = "ICMP"
+  #   direction = "out"
+  #   protocol = "icmp"
+  #   destination_ips = [
+  #     local.ipv6_everywhere
+  #   ]
+  # }
+
+  # rule {
+  #   description = "DNS"
+  #   direction = "out"
+  #   protocol = "tcp"
+  #   port = 53
+  #   destination_ips = [
+  #     local.ipv4_everywhere
+  #   ]
+  # }
+
+  # rule {
+  #   description = "DNS"
+  #   direction = "out"
+  #   protocol = "udp"
+  #   port = 53
+  #   destination_ips = [
+  #     local.ipv4_everywhere
+  #   ]
+  # }
+
+  # rule {
+  #   description = "HTTP"
+  #   direction = "out"
+  #   protocol = "tcp"
+  #   port = 80
+  #   destination_ips = [
+  #     local.ipv4_everywhere
+  #   ]
+  # }
+
+  # rule {
+  #   description = "HTTPS"
+  #   direction = "out"
+  #   protocol = "tcp"
+  #   port = 443
+  #   destination_ips = [
+  #     local.ipv4_everywhere
+  #   ]
+  # }
+} # "hcloud_firewall" "fw6_base"
 
 resource "hcloud_firewall" "srv11_fw4_servizi" {
   name = "srv11_fw4_servizi"
+
+  # IN
   rule {
     description = "SMTP"
     direction = "in"
@@ -334,20 +456,42 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
     ]
   }
 
-  rule {
-    description = "nonnocamX"
-    direction = "in"
-    protocol = "tcp"
-    port = "48088-48554"
-    source_ips = [
-      local.ipv4_everywhere
-    ]
-  }
-}
+  # rule {
+  #   description = "nonnocamX"
+  #   direction = "in"
+  #   protocol = "tcp"
+  #   port = "48088-48554"
+  #   source_ips = [
+  #     local.ipv4_everywhere
+  #   ]
+  # }
+
+  # OUT
+  # rule {
+  #   description = "SMTP"
+  #   direction = "out"
+  #   protocol = "tcp"
+  #   port = 25
+  #   destination_ips = [
+  #     local.ipv4_everywhere
+  #   ]
+  # }
+
+  # rule {
+  #   description = "SMTPS"
+  #   direction = "out"
+  #   protocol = "tcp"
+  #   port = 465
+  #   destination_ips = [
+  #     local.ipv4_everywhere
+  #   ]
+  # }
+} # "hcloud_firewall" "srv11_fw4_servizi"
 
 resource "hcloud_firewall" "srv11_fw6_servizi" {
   name = "srv11_fw6_servizi"
 
+  # IN
   rule {
     description = "SMTP"
     direction = "in"
@@ -447,10 +591,33 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
       local.ipv6_everywhere
     ]
   }
-}
+
+  # OUT
+  # rule {
+  #   description = "SMTP"
+  #   direction = "out"
+  #   protocol = "tcp"
+  #   port = 25
+  #   destination_ips = [
+  #     local.ipv6_everywhere
+  #   ]
+  # }
+
+  # rule {
+  #   description = "SMTP"
+  #   direction = "out"
+  #   protocol = "tcp"
+  #   port = 465
+  #   destination_ips = [
+  #     local.ipv6_everywhere
+  #   ]
+  # }
+} # "hcloud_firewall" "srv11_fw6_servizi"
 
 resource "hcloud_firewall" "srv11_fw6_adm" {
   name = "srv11_fw6_adm"
+
+  # IN
   rule {
     description = "PostgreSQL"
     direction = "in"
@@ -479,19 +646,32 @@ resource "hcloud_firewall" "srv11_fw6_adm" {
       local.gw2_rei_ip6
     ]
   }
-  rule {
-    description = "gw2.srv11 - gw2.rei"
-    direction = "out"
-    protocol = "gre"
-    destination_ips = [
-      local.gw2_rei_ip6
-    ]
-  }
-}
+
+  # OUT
+  # rule {
+  #   description = "NTP"
+  #   direction = "out"
+  #   protocol = "udp"
+  #   port = 123
+  #   destination_ips = [
+  #     local.ipv6_everywhere
+  #   ]
+  # }
+
+  # rule {
+  #   description = "gw2.srv11 - gw2.rei"
+  #   direction = "out"
+  #   protocol = "gre"
+  #   destination_ips = [
+  #     local.gw2_rei_ip6
+  #   ]
+  # }
+} # "hcloud_firewall" "srv11_fw6_adm"
 
 resource "hcloud_firewall" "srv13_fw6_servizi" {
   name = "srv13_fw6_servizi"
 
+  # IN
   # Il traffico di rete di Consul è indicato in
   # <https://www.claudiokuenzler.com/blog/890/first-steps-consul-interpret-communication-errors-between-nodes>
   rule {
@@ -513,15 +693,6 @@ resource "hcloud_firewall" "srv13_fw6_servizi" {
     ]
   }
   rule {
-    description = "Consul server-to-server"
-    direction = "out"
-    protocol = "tcp"
-    port = 8300
-    destination_ips = [
-      local.ch_ag_net6
-    ]
-  }
-  rule {
     description = "Consul client-to-server LAN gossip"
     direction = "in"
     protocol = "tcp"
@@ -536,24 +707,6 @@ resource "hcloud_firewall" "srv13_fw6_servizi" {
     protocol = "udp"
     port = 8301
     source_ips = [
-      local.ch_ag_net6
-    ]
-  }
-rule {
-    description = "Consul server-to-client LAN gossip"
-    direction = "out"
-    protocol = "tcp"
-    port = 8301
-    destination_ips = [
-      local.ch_ag_net6
-    ]
-  }
-  rule {
-    description = "Consul server-to-client LAN gossip"
-    direction = "out"
-    protocol = "udp"
-    port = 8301
-    destination_ips = [
       local.ch_ag_net6
     ]
   }
@@ -575,28 +728,59 @@ rule {
       local.ch_ag_net6
     ]
   }
-  rule {
-    description = "Consul server-to-client WAN gossip"
-    direction = "out"
-    protocol = "tcp"
-    port = 8302
-    destination_ips = [
-      local.ch_ag_net6
-    ]
-  }
-  rule {
-    description = "Consul server-to-client WAN gossip"
-    direction = "out"
-    protocol = "udp"
-    port = 8302
-    destination_ips = [
-      local.ch_ag_net6
-    ]
-  }
-}
+
+  # OUT
+  # rule {
+  #   description = "Consul server-to-server"
+  #   direction = "out"
+  #   protocol = "tcp"
+  #   port = 8300
+  #   destination_ips = [
+  #     local.ch_ag_net6
+  #   ]
+  # }
+  # rule {
+  #   description = "Consul server-to-client LAN gossip"
+  #   direction = "out"
+  #   protocol = "tcp"
+  #   port = 8301
+  #   destination_ips = [
+  #     local.ch_ag_net6
+  #   ]
+  # }
+  # rule {
+  #   description = "Consul server-to-client LAN gossip"
+  #   direction = "out"
+  #   protocol = "udp"
+  #   port = 8301
+  #   destination_ips = [
+  #     local.ch_ag_net6
+  #   ]
+  # }
+  # rule {
+  #   description = "Consul server-to-client WAN gossip"
+  #   direction = "out"
+  #   protocol = "tcp"
+  #   port = 8302
+  #   destination_ips = [
+  #     local.ch_ag_net6
+  #   ]
+  # }
+  # rule {
+  #   description = "Consul server-to-client WAN gossip"
+  #   direction = "out"
+  #   protocol = "udp"
+  #   port = 8302
+  #   destination_ips = [
+  #     local.ch_ag_net6
+  #   ]
+  # }
+} # "hcloud_firewall" "srv13_fw6_servizi"
 
 resource "hcloud_firewall" "srv13_fw4_servizi" {
   name = "srv13_fw4_servizi"
+
+  # IN
   rule {
     description = "DNS"
     direction = "in"
@@ -636,11 +820,53 @@ resource "hcloud_firewall" "srv13_fw4_servizi" {
       local.ipv4_everywhere
     ]
   }
-}
+
+  # OUT
+  # rule {
+  #   description = "DNS"
+  #   direction = "out"
+  #   protocol = "tcp"
+  #   port = 25
+  #   destination_ips = [
+  #     local.ipv4_everywhere
+  #   ]
+  # }
+
+  # rule {
+  #   description = "SMTP"
+  #   direction = "out"
+  #   protocol = "tcp"
+  #   port = 465
+  #   destination_ips = [
+  #     local.ipv4_everywhere
+  #   ]
+  # }
+
+  # rule {
+  #   description = "DNS"
+  #   direction = "out"
+  #   protocol = "tcp"
+  #   port = 53
+  #   destination_ips = [
+  #     local.ipv4_everywhere
+  #   ]
+  # }
+
+  # rule {
+  #   description = "DNS"
+  #   direction = "out"
+  #   protocol = "udp"
+  #   port = 53
+  #   destination_ips = [
+  #     local.ipv4_everywhere
+  #   ]
+  # }
+} # "hcloud_firewall" "srv13_fw4_servizi"
 
 resource "hcloud_firewall" "srv13_fw6_adm" {
   name = "srv13_fw6_adm"
   
+  # IN
   rule {
     description = "gw3.shu - srv13"
     direction = "in"
@@ -649,15 +875,17 @@ resource "hcloud_firewall" "srv13_fw6_adm" {
       local.gw3_shu_ip6
     ]
   }
-  rule {
-    description = "srv13 - gw3.shu"
-    direction = "out"
-    protocol = "gre"
-    destination_ips = [
-      local.gw3_shu_ip6
-    ]
-  }
-}
+
+  # OUT
+  # rule {
+  #   description = "srv13 - gw3.shu"
+  #   direction = "out"
+  #   protocol = "gre"
+  #   destination_ips = [
+  #     local.gw3_shu_ip6
+  #   ]
+  # }
+} # "hcloud_firewall" "srv13_fw6_adm"
 
 ###
 
