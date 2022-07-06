@@ -495,6 +495,15 @@ resource "hcloud_firewall" "srv13_fw6_servizi" {
   # Il traffico di rete di Consul è indicato in
   # <https://www.claudiokuenzler.com/blog/890/first-steps-consul-interpret-communication-errors-between-nodes>
   rule {
+    description = "Consul UI"
+    direction = "in"
+    protocol = "tcp"
+    port = 8443
+    source_ips = [
+      local.ch_ag_net6
+    ]
+  }
+  rule {
     description = "Consul client-to-server"
     direction = "in"
     protocol = "tcp"
