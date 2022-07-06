@@ -22,6 +22,22 @@ terraform {
 #      nella definizione del provider "vault"
 #variable "vault_token" {}
 
+locals {
+  ipv4_everywhere = "0.0.0.0/0"
+  ipv6_everywhere = "::/0"
+  #
+  ch_ag_netprefix6 = "2a02:aa13:a100:1b00"
+  ch_ag_net6 = join ( "",[local.ch_ag_netprefix6,"::","/64"] )
+  #
+  it_pd_netprefix6 = "2001:b07:6478:c6f6"
+  it_pd_net6 = join ( "",[local.it_pd_netprefix6,"::","/64"] )
+  #
+  gw2_rei_ip6 = join ( "",[local.it_pd_netprefix6,":","216:3eff:feeb:1c5","/128"] )
+  gw3_shu_ip6 = join ( "",[local.ch_ag_netprefix6,":","216:3eff:feeb:3c7","/128"] )
+  #
+  ssh_port = 48840
+}
+
 #
 # N.B. Il token deve avere la seguente capability:
 #   path "auth/token/create" {
@@ -131,7 +147,8 @@ resource "hcloud_server" "srv13" {
     hcloud_firewall.fw4_base.id,
     hcloud_firewall.srv13_fw4_servizi.id,
     hcloud_firewall.fw6_base.id,
-    hcloud_firewall.srv13_fw6_adm.id
+    hcloud_firewall.srv13_fw6_adm.id,
+    hcloud_firewall.srv13_fw6_servizi.id
   ]
 
   lifecycle {
@@ -177,9 +194,9 @@ resource "hcloud_firewall" "fw4_base" {
     description = "SSH"
     direction = "in"
     protocol = "tcp"
-    port = 48840
+    port = local.ssh_port
     source_ips = [
-      "0.0.0.0/0"
+      local.ipv4_everywhere
     ]
   }
   rule {
@@ -187,7 +204,7 @@ resource "hcloud_firewall" "fw4_base" {
     direction = "in"
     protocol = "icmp"
     source_ips = [
-      "0.0.0.0/0"
+      local.ipv4_everywhere
     ]
   }
 }
@@ -199,9 +216,9 @@ resource "hcloud_firewall" "fw6_base" {
     description = "SSH"
     direction = "in"
     protocol = "tcp"
-    port = 48840
+    port = local.ssh_port
     source_ips = [
-      "::/0"
+      local.ipv6_everywhere
     ]
   }
 
@@ -210,7 +227,7 @@ resource "hcloud_firewall" "fw6_base" {
     direction = "in"
     protocol = "icmp"
     source_ips = [
-      "::/0"
+      local.ipv6_everywhere
     ]
   }
 }
@@ -223,7 +240,7 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
     protocol = "tcp"
     port = 25
     source_ips = [
-      "0.0.0.0/0"
+      local.ipv4_everywhere
     ]
   }
 
@@ -233,7 +250,7 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
     protocol = "tcp"
     port = 465
     source_ips = [
-      "0.0.0.0/0"
+      local.ipv4_everywhere
     ]
   }
 
@@ -243,7 +260,7 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
     protocol = "tcp"
     port = 587
     source_ips = [
-      "0.0.0.0/0"
+      local.ipv4_everywhere
     ]
   }
 
@@ -253,7 +270,7 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
     protocol = "tcp"
     port = 110
     source_ips = [
-      "0.0.0.0/0"
+      local.ipv4_everywhere
     ]
   }
 
@@ -263,7 +280,7 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
     protocol = "tcp"
     port = 995
     source_ips = [
-      "0.0.0.0/0"
+      local.ipv4_everywhere
     ]
   }
 
@@ -273,7 +290,7 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
     protocol = "tcp"
     port = 993
     source_ips = [
-      "0.0.0.0/0"
+      local.ipv4_everywhere
     ]
   }
 
@@ -283,7 +300,7 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
     protocol = "tcp"
     port = 53
     source_ips = [
-      "0.0.0.0/0"
+      local.ipv4_everywhere
     ]
   }
 
@@ -293,7 +310,7 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
     protocol = "udp"
     port = 53
     source_ips = [
-      "0.0.0.0/0"
+      local.ipv4_everywhere
     ]
   }
 
@@ -303,7 +320,7 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
     protocol = "tcp"
     port = 80
     source_ips = [
-      "0.0.0.0/0"
+      local.ipv4_everywhere
     ]
   }
 
@@ -313,7 +330,7 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
     protocol = "tcp"
     port = 443
     source_ips = [
-      "0.0.0.0/0"
+      local.ipv4_everywhere
     ]
   }
 
@@ -323,7 +340,7 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
     protocol = "tcp"
     port = "48088-48554"
     source_ips = [
-      "0.0.0.0/0"
+      local.ipv4_everywhere
     ]
   }
 }
@@ -337,7 +354,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
     protocol = "tcp"
     port = 25
     source_ips = [
-      "::/0"
+      local.ipv6_everywhere
     ]
   }
 
@@ -347,7 +364,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
     protocol = "tcp"
     port = 465
     source_ips = [
-      "::/0"
+      local.ipv6_everywhere
     ]
   }
 
@@ -357,7 +374,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
     protocol = "tcp"
     port = 587
     source_ips = [
-      "::/0"
+      local.ipv6_everywhere
     ]
   }
 
@@ -367,7 +384,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
     protocol = "tcp"
     port = 110
     source_ips = [
-      "::/0"
+      local.ipv6_everywhere
     ]
   }
 
@@ -377,7 +394,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
     protocol = "tcp"
     port = 995
     source_ips = [
-      "::/0"
+      local.ipv6_everywhere
     ]
   }
 
@@ -387,7 +404,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
     protocol = "tcp"
     port = 993
     source_ips = [
-      "::/0"
+      local.ipv6_everywhere
     ]
   }
 
@@ -397,7 +414,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
     protocol = "tcp"
     port = 53
     source_ips = [
-      "::/0"
+      local.ipv6_everywhere
     ]
   }
 
@@ -407,7 +424,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
     protocol = "udp"
     port = 53
     source_ips = [
-      "::/0"
+      local.ipv6_everywhere
     ]
   }
 
@@ -417,7 +434,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
     protocol = "tcp"
     port = 80
     source_ips = [
-      "::/0"
+      local.ipv6_everywhere
     ]
   }
 
@@ -427,7 +444,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
     protocol = "tcp"
     port = 443
     source_ips = [
-      "::/0"
+      local.ipv6_everywhere
     ]
   }
 }
@@ -440,7 +457,7 @@ resource "hcloud_firewall" "srv11_fw6_adm" {
     protocol = "tcp"
     port = 5432
     source_ips = [
-      "::/0"
+      local.ipv6_everywhere
     ]
   }
 
@@ -450,16 +467,103 @@ resource "hcloud_firewall" "srv11_fw6_adm" {
     protocol = "udp"
     port = 123
     source_ips = [
-      "::/0"
+      local.ipv6_everywhere
     ]
   }
 
   rule {
-    description = "gw2.srv11 - gw2.rei"
+    description = "gw2.rei - gw2.srv11"
     direction = "in"
     protocol = "gre"
     source_ips = [
-      "2001:b07:6478:c6f6:216:3eff:feeb:1c5/128"
+      local.gw2_rei_ip6
+    ]
+  }
+  rule {
+    description = "gw2.srv11 - gw2.rei"
+    direction = "out"
+    protocol = "gre"
+    destination_ips = [
+      local.gw2_rei_ip6
+    ]
+  }
+}
+
+resource "hcloud_firewall" "srv13_fw6_servizi" {
+  name = "srv13_fw6_servizi"
+
+  # Il traffico di rete di Consul è indicato in
+  # <https://www.claudiokuenzler.com/blog/890/first-steps-consul-interpret-communication-errors-between-nodes>
+  rule {
+    description = "Consul client-to-server"
+    direction = "in"
+    protocol = "tcp"
+    port = 8300
+    source_ips = [
+      local.ch_ag_net6
+    ]
+  }
+  rule {
+    description = "Consul server-to-server"
+    direction = "out"
+    protocol = "tcp"
+    port = 8300
+    destination_ips = [
+      local.ch_ag_net6
+    ]
+  }
+  rule {
+    description = "Consul client-to-server LAN gossip"
+    direction = "in"
+    protocol = "tcp"
+    port = 8301
+    source_ips = [
+      local.ch_ag_net6
+    ]
+  }
+  rule {
+    description = "Consul client-to-server LAN gossip"
+    direction = "in"
+    protocol = "udp"
+    port = 8301
+    source_ips = [
+      local.ch_ag_net6
+    ]
+  }
+  rule {
+    description = "Consul client-to-server WAN gossip"
+    direction = "in"
+    protocol = "tcp"
+    port = 8302
+    source_ips = [
+      local.ch_ag_net6
+    ]
+  }
+  rule {
+    description = "Consul client-to-server WAN gossip"
+    direction = "in"
+    protocol = "udp"
+    port = 8302
+    source_ips = [
+      local.ch_ag_net6
+    ]
+  }
+  rule {
+    description = "Consul client-to-server WAN gossip"
+    direction = "out"
+    protocol = "tcp"
+    port = 8302
+    destination_ips = [
+      local.ch_ag_net6
+    ]
+  }
+  rule {
+    description = "Consul client-to-server WAN gossip"
+    direction = "out"
+    protocol = "udp"
+    port = 8302
+    destination_ips = [
+      local.ch_ag_net6
     ]
   }
 }
@@ -472,7 +576,7 @@ resource "hcloud_firewall" "srv13_fw4_servizi" {
     protocol = "tcp"
     port = 25
     source_ips = [
-      "0.0.0.0/0"
+      local.ipv4_everywhere
     ]
   }
 
@@ -482,7 +586,7 @@ resource "hcloud_firewall" "srv13_fw4_servizi" {
     protocol = "tcp"
     port = 465
     source_ips = [
-      "0.0.0.0/0"
+      local.ipv4_everywhere
     ]
   }
 
@@ -492,7 +596,7 @@ resource "hcloud_firewall" "srv13_fw4_servizi" {
     protocol = "tcp"
     port = 53
     source_ips = [
-      "0.0.0.0/0"
+      local.ipv4_everywhere
     ]
   }
 
@@ -502,7 +606,7 @@ resource "hcloud_firewall" "srv13_fw4_servizi" {
     protocol = "udp"
     port = 53
     source_ips = [
-      "0.0.0.0/0"
+      local.ipv4_everywhere
     ]
   }
 }
@@ -511,11 +615,19 @@ resource "hcloud_firewall" "srv13_fw6_adm" {
   name = "srv13_fw6_adm"
   
   rule {
-    description = "srv13 - gw3.shu"
+    description = "gw3.shu - srv13"
     direction = "in"
     protocol = "gre"
     source_ips = [
-      "2a02:aa13:a100:1b00:216:3eff:feeb:3c7/128"
+      local.gw3_shu_ip6
+    ]
+  }
+  rule {
+    description = "srv13 - gw3.shu"
+    direction = "out"
+    protocol = "gre"
+    destination_ips = [
+      local.gw3_shu_ip6
     ]
   }
 }
