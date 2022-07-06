@@ -530,6 +530,24 @@ resource "hcloud_firewall" "srv13_fw6_servizi" {
       local.ch_ag_net6
     ]
   }
+rule {
+    description = "Consul client-to-server LAN gossip"
+    direction = "out"
+    protocol = "tcp"
+    port = 8301
+    destination_ips = [
+      local.ch_ag_net6
+    ]
+  }
+  rule {
+    description = "Consul client-to-server LAN gossip"
+    direction = "out"
+    protocol = "udp"
+    port = 8301
+    destination_ips = [
+      local.ch_ag_net6
+    ]
+  }
   rule {
     description = "Consul client-to-server WAN gossip"
     direction = "in"
