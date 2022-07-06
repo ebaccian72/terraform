@@ -531,7 +531,7 @@ resource "hcloud_firewall" "srv13_fw6_servizi" {
     ]
   }
 rule {
-    description = "Consul client-to-server LAN gossip"
+    description = "Consul server-to-client LAN gossip"
     direction = "out"
     protocol = "tcp"
     port = 8301
@@ -540,7 +540,7 @@ rule {
     ]
   }
   rule {
-    description = "Consul client-to-server LAN gossip"
+    description = "Consul server-to-client LAN gossip"
     direction = "out"
     protocol = "udp"
     port = 8301
@@ -567,7 +567,7 @@ rule {
     ]
   }
   rule {
-    description = "Consul client-to-server WAN gossip"
+    description = "Consul server-to-client WAN gossip"
     direction = "out"
     protocol = "tcp"
     port = 8302
@@ -576,7 +576,7 @@ rule {
     ]
   }
   rule {
-    description = "Consul client-to-server WAN gossip"
+    description = "Consul server-to-client WAN gossip"
     direction = "out"
     protocol = "udp"
     port = 8302
