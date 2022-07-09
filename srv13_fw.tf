@@ -391,6 +391,15 @@ resource "hcloud_firewall" "srv13_fw6_adm" {
 
   # OUT
   rule {
+    description = "StorageBox"
+    direction = "out"
+    protocol = "tcp"
+    port = 23
+    destination_ips = [
+      local.ipv6_everywhere
+    ]
+  }
+  rule {
     description = "srv13 - gw3.shu"
     direction = "out"
     protocol = "gre"

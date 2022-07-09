@@ -486,7 +486,15 @@ resource "hcloud_firewall" "srv11_fw6_adm" {
       local.ipv6_everywhere
     ]
   }
-
+  rule {
+    description = "StorageBox"
+    direction = "out"
+    protocol = "tcp"
+    port = 23
+    destination_ips = [
+      local.ipv6_everywhere
+    ]
+  }
   rule {
     description = "gw2.srv11 - gw2.rei"
     direction = "out"
