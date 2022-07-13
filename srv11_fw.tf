@@ -21,6 +21,15 @@ resource "hcloud_firewall" "srv11_fw4_base" {
     ]
   }
   rule {
+    description = "NTP"
+    direction = "in"
+    protocol = "udp"
+    port = 123
+    source_ips = [
+      local.ipv4_everywhere
+    ]
+  }
+  rule {
     description = "ICMP"
     direction = "in"
     protocol = "icmp"
@@ -44,6 +53,15 @@ resource "hcloud_firewall" "srv11_fw4_base" {
     direction = "out"
     protocol = "tcp"
     port = local.ssh_port
+    destination_ips = [
+      local.ipv4_everywhere
+    ]
+  }
+  rule {
+    description = "NTP"
+    direction = "out"
+    protocol = "udp"
+    port = 123
     destination_ips = [
       local.ipv4_everywhere
     ]
