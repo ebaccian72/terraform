@@ -71,7 +71,7 @@ resource "hcloud_ssh_key" "ansible_key" {
 }
 
 data "vault_generic_secret" "enrico_general_key_path" {
-  path = "kv/ssh-client/enrico@jigen.megane.eb+ed25519"
+  path = "kv/ssh-client/enrico@toki.megane.eb+ed25519"
 }
 
 resource "hcloud_ssh_key" "enrico_general_key" {
@@ -80,7 +80,7 @@ resource "hcloud_ssh_key" "enrico_general_key" {
 }
 
 data "vault_generic_secret" "enrico_main_key_path" {
-  path = "kv/ssh-client/enrico@jigen.megane.eb+ed25519-sk"
+  path = "kv/ssh-client/enrico@toki.megane.eb+ed25519-sk"
 }
 resource "hcloud_ssh_key" "enrico_main_key" {
   name = "Enrico Baccianini, 2021 - 5060408461426"
