@@ -2,12 +2,12 @@ terraform {
   required_providers {
     hcloud = {
       source = "hetznercloud/hcloud"
-      version = "1.35.0"
+      version = "1.35.1"
     }
 
     vault = {
       source = "hashicorp/vault"
-      version = "3.7.0"
+      version = "3.8.0"
     }
   }
 }
