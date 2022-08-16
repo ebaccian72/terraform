@@ -1,6 +1,6 @@
 resource "hcloud_server" "srv13" {
   name = "srv13"
-  image = "ubuntu-20.04"
+  image = "ubuntu-22.04"
   server_type = "cx11"
   location = "hel1"
   keep_disk = true
