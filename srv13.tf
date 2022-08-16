@@ -19,8 +19,7 @@ resource "hcloud_server" "srv13" {
     hcloud_firewall.srv13_fw4_base.id,
     hcloud_firewall.srv13_fw4_servizi.id,
     hcloud_firewall.srv13_fw6_base.id,
-    hcloud_firewall.srv13_fw6_adm.id,
-    hcloud_firewall.srv13_fw6_servizi.id
+    hcloud_firewall.srv13_fw6_adm.id
   ]
 
   lifecycle {

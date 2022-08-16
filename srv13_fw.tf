@@ -201,14 +201,6 @@ resource "hcloud_firewall" "srv13_fw6_base" {
   }
 } # "hcloud_firewall" "srv13_fw6_base"
 
-resource "hcloud_firewall" "srv13_fw6_servizi" {
-  name = "srv13_fw6_servizi"
-
-  # IN
-  # OUT
- 
-} # "hcloud_firewall" "srv13_fw6_servizi"
-
 resource "hcloud_firewall" "srv13_fw4_servizi" {
   name = "srv13_fw4_servizi"
 
