@@ -206,7 +206,7 @@ resource "hcloud_firewall" "srv13_fw4_servizi" {
 
   # IN
   rule {
-    description = "DNS"
+    description = "SMTP"
     direction = "in"
     protocol = "tcp"
     port = 25
@@ -246,7 +246,7 @@ resource "hcloud_firewall" "srv13_fw4_servizi" {
 
   # OUT
   rule {
-    description = "DNS"
+    description = "SMTP"
     direction = "out"
     protocol = "tcp"
     port = 25
