@@ -244,6 +244,16 @@ resource "hcloud_firewall" "srv13_fw4_servizi" {
     ]
   }
 
+  rule {
+    description = "WireGuard"
+    direction = "in"
+    protocol = "udp"
+    port = 51820
+    source_ips = [
+      local.ipv4_everywhere
+    ]
+  }
+
   # OUT
   rule {
     description = "SMTP"
