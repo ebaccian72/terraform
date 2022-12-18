@@ -7,7 +7,7 @@ resource "hcloud_server" "srv14" {
   delete_protection = false
   rebuild_protection = false
   allow_deprecated_images = false
-  
+
   ssh_keys = [
     hcloud_ssh_key.ansible_key.name,
     hcloud_ssh_key.enrico_general_key.name,

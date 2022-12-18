@@ -297,7 +297,7 @@ resource "hcloud_firewall" "srv13_fw4_servizi" {
 
 resource "hcloud_firewall" "srv13_fw6_adm" {
   name = "srv13_fw6_adm"
-  
+
   # IN
   rule {
     description = "gw3.shu - srv13"
