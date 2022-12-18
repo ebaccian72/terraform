@@ -17,3 +17,4 @@ azure/
 hcloud
 terraform.tfstate*
 .vault-token
+.selected_editor
