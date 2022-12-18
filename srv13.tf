@@ -1,11 +1,11 @@
 resource "hcloud_server" "srv13" {
-  name = "srv13"
-  image = "ubuntu-22.04"
-  server_type = "cx11"
-  location = "hel1"
-  keep_disk = true
-  delete_protection = true
-  rebuild_protection = true
+  name                    = "srv13"
+  image                   = "ubuntu-22.04"
+  server_type             = "cx11"
+  location                = "hel1"
+  keep_disk               = true
+  delete_protection       = true
+  rebuild_protection      = true
   allow_deprecated_images = false
 
   ssh_keys = [
@@ -32,10 +32,10 @@ resource "hcloud_server" "srv13" {
 ###
 
 resource "hcloud_floating_ip" "ip4_2o" {
-  description   = "secondario IPv4"
-  name = "ip4_2o"
-  type = "ipv4"
-  home_location = "nbg1"
+  description       = "secondario IPv4"
+  name              = "ip4_2o"
+  type              = "ipv4"
+  home_location     = "nbg1"
   delete_protection = true
-  server_id = hcloud_server.srv13.id
+  server_id         = hcloud_server.srv13.id
 }
