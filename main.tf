@@ -23,8 +23,8 @@ terraform {
 #variable "vault_token" {}
 
 locals {
-  ipv4_everywhere  = "0.0.0.0/0"
-  ipv6_everywhere  = "::/0"
+  ipv4_everywhere = "0.0.0.0/0"
+  ipv6_everywhere = "::/0"
   #
   ch_ag_netprefix6 = "2a02:aa13:a100:1b00"
   ch_ag_net6       = join ( "",[local.ch_ag_netprefix6,"::","/64"] )
@@ -35,7 +35,7 @@ locals {
   gw2_rei_ip6      = join ( "",[local.it_pd_netprefix6,":","216:3eff:feeb:1c5","/128"] )
   gw3_shu_ip6      = join ( "",[local.ch_ag_netprefix6,":","216:3eff:feeb:3c7","/128"] )
   #
-  ssh_port         = 48840
+  ssh_port = 48840
 }
 
 #

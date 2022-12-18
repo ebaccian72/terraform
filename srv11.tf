@@ -66,7 +66,7 @@ resource "hcloud_volume" "volume_3" {
 ###
 
 resource "hcloud_floating_ip" "ip4_1o" {
-  description   = "primario IPv4"
+  description       = "primario IPv4"
   name              = "ip4_1o"
   type              = "ipv4"
   home_location     = "nbg1"
