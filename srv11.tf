@@ -1,6 +1,6 @@
 resource "hcloud_server" "srv11" {
   name = "srv11"
-  image = "ubuntu-20.04"
+  image = "ubuntu-22.04"
   server_type = "cx31"
   location = "nbg1"
   keep_disk = true
@@ -8,14 +8,14 @@ resource "hcloud_server" "srv11" {
   rebuild_protection = true
   allow_deprecated_images = false
   
-  ssh_keys = [ 
+  ssh_keys = [
     hcloud_ssh_key.ansible_key.name,
     hcloud_ssh_key.enrico_general_key.name,
     hcloud_ssh_key.enrico_main_key.name,
     hcloud_ssh_key.enrico_backup_key.name
   ]
 
-  firewall_ids = [ 
+  firewall_ids = [
     hcloud_firewall.srv11_fw4_base.id,
     hcloud_firewall.srv11_fw4_servizi.id,
     hcloud_firewall.srv11_fw6_base.id,
@@ -69,7 +69,7 @@ resource "hcloud_floating_ip" "ip4_1o" {
   description   = "primario IPv4"
   name = "ip4_1o"
   type = "ipv4"
-  home_location = "nbg1"  
+  home_location = "nbg1"
   delete_protection = true
   server_id = hcloud_server.srv11.id
 }

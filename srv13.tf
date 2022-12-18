@@ -8,7 +8,7 @@ resource "hcloud_server" "srv13" {
   rebuild_protection = true
   allow_deprecated_images = false
   
-  ssh_keys = [ 
+  ssh_keys = [
     hcloud_ssh_key.ansible_key.name,
     hcloud_ssh_key.enrico_general_key.name,
     hcloud_ssh_key.enrico_main_key.name,
@@ -35,7 +35,7 @@ resource "hcloud_floating_ip" "ip4_2o" {
   description   = "secondario IPv4"
   name = "ip4_2o"
   type = "ipv4"
-  home_location = "nbg1"  
+  home_location = "nbg1"
   delete_protection = true
   server_id = hcloud_server.srv13.id
 }
