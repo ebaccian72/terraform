@@ -333,6 +333,35 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
       local.ipv4_everywhere
     ]
   }
+
+  rule {
+    description = "Razor"
+    direction   = "out"
+    protocol    = "tcp"
+    port        = 2703
+    destination_ips = [
+      local.ipv4_everywhere
+    ]
+  }
+
+  rule {
+    description = "Pyzor"
+    direction   = "out"
+    protocol    = "tcp"
+    port        = 24441
+    destination_ips = [
+      local.ipv4_everywhere
+    ]
+  }
+  rule {
+    description = "Pyzor"
+    direction   = "out"
+    protocol    = "udp"
+    port        = 24441
+    destination_ips = [
+      local.ipv4_everywhere
+    ]
+  }
 } # "hcloud_firewall" "srv11_fw4_servizi"
 
 resource "hcloud_firewall" "srv11_fw6_servizi" {
