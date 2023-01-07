@@ -138,7 +138,7 @@ resource "hcloud_firewall" "srv11_fw6_base" {
 
   # IN
   rule {
-    description = "srv11 systemd-networkd - SSH"
+    description = "srv11 - SSH"
     direction   = "in"
     protocol    = "tcp"
     port        = local.ssh_port
@@ -314,7 +314,7 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
     ]
   }
   rule {
-    description = "wwww.srv11 - HTTPS"
+    description = "www.srv11 - HTTPS"
     direction   = "in"
     protocol    = "tcp"
     port        = 443
