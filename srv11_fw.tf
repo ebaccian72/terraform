@@ -3,7 +3,7 @@ resource "hcloud_firewall" "srv11_fw4_base" {
 
   # IN
   rule {
-    description = "DHCP"
+    description = "srv11 systemd-networkd - DHCP"
     direction   = "in"
     protocol    = "udp"
     port        = "67"
@@ -12,7 +12,7 @@ resource "hcloud_firewall" "srv11_fw4_base" {
     ]
   }
   rule {
-    description = "SSH"
+    description = "srv11 - SSH"
     direction   = "in"
     protocol    = "tcp"
     port        = local.ssh_port
@@ -21,7 +21,7 @@ resource "hcloud_firewall" "srv11_fw4_base" {
     ]
   }
   rule {
-    description = "NTP"
+    description = "tempo.srv11 - NTP"
     direction   = "in"
     protocol    = "udp"
     port        = 123
@@ -30,7 +30,7 @@ resource "hcloud_firewall" "srv11_fw4_base" {
     ]
   }
   rule {
-    description = "ICMP"
+    description = "srv11 - ICMP"
     direction   = "in"
     protocol    = "icmp"
     source_ips = [
@@ -40,7 +40,7 @@ resource "hcloud_firewall" "srv11_fw4_base" {
 
   # OUT
   rule {
-    description = "DHCP"
+    description = "srv11 systemd-networkd - DHCP"
     direction   = "out"
     protocol    = "udp"
     port        = "68"
@@ -49,7 +49,7 @@ resource "hcloud_firewall" "srv11_fw4_base" {
     ]
   }
   rule {
-    description = "SSH"
+    description = "srv11"
     direction   = "out"
     protocol    = "tcp"
     port        = local.ssh_port
@@ -58,7 +58,7 @@ resource "hcloud_firewall" "srv11_fw4_base" {
     ]
   }
   rule {
-    description = "NTP"
+    description = "tempo.srv11 - NTP"
     direction   = "out"
     protocol    = "udp"
     port        = 123
@@ -67,7 +67,7 @@ resource "hcloud_firewall" "srv11_fw4_base" {
     ]
   }
   rule {
-    description = "ICMP"
+    description = "srv11 - ICMP"
     direction   = "out"
     protocol    = "icmp"
     destination_ips = [
@@ -76,7 +76,7 @@ resource "hcloud_firewall" "srv11_fw4_base" {
   }
 
   rule {
-    description = "DNS"
+    description = "dns.srv11 - DNS"
     direction   = "out"
     protocol    = "tcp"
     port        = 53
@@ -86,7 +86,7 @@ resource "hcloud_firewall" "srv11_fw4_base" {
   }
 
   rule {
-    description = "DNS"
+    description = "dns.srv11 - DNS"
     direction   = "out"
     protocol    = "udp"
     port        = 53
@@ -96,7 +96,7 @@ resource "hcloud_firewall" "srv11_fw4_base" {
   }
 
   rule {
-    description = "HTTP"
+    description = "proxy.srv11 - HTTP"
     direction   = "out"
     protocol    = "tcp"
     port        = 80
@@ -104,12 +104,29 @@ resource "hcloud_firewall" "srv11_fw4_base" {
       local.ipv4_everywhere
     ]
   }
-
   rule {
-    description = "HTTPS"
+    description = "proxy.srv11 - HTTPS"
     direction   = "out"
     protocol    = "tcp"
     port        = 443
+    destination_ips = [
+      local.ipv4_everywhere
+    ]
+  }
+  rule {
+    description = "proxy.srv11 - 8080"
+    direction   = "out"
+    protocol    = "tcp"
+    port        = 8080
+    destination_ips = [
+      local.ipv4_everywhere
+    ]
+  }
+  rule {
+    description = "proxy.srv11 - 8443"
+    direction   = "out"
+    protocol    = "tcp"
+    port        = 8443
     destination_ips = [
       local.ipv4_everywhere
     ]
@@ -121,7 +138,7 @@ resource "hcloud_firewall" "srv11_fw6_base" {
 
   # IN
   rule {
-    description = "SSH"
+    description = "srv11 systemd-networkd - SSH"
     direction   = "in"
     protocol    = "tcp"
     port        = local.ssh_port
@@ -130,7 +147,7 @@ resource "hcloud_firewall" "srv11_fw6_base" {
     ]
   }
   rule {
-    description = "ICMP"
+    description = "srv11 - ICMP"
     direction   = "in"
     protocol    = "icmp"
     source_ips = [
@@ -140,7 +157,7 @@ resource "hcloud_firewall" "srv11_fw6_base" {
 
   # OUT
   rule {
-    description = "SSH"
+    description = "srv11 - SSH"
     direction   = "out"
     protocol    = "tcp"
     port        = local.ssh_port
@@ -150,7 +167,7 @@ resource "hcloud_firewall" "srv11_fw6_base" {
   }
 
   rule {
-    description = "ICMP"
+    description = "srv11 - ICMP"
     direction   = "out"
     protocol    = "icmp"
     destination_ips = [
@@ -159,7 +176,7 @@ resource "hcloud_firewall" "srv11_fw6_base" {
   }
 
   rule {
-    description = "DNS"
+    description = "dns.srv11 - DNS"
     direction   = "out"
     protocol    = "tcp"
     port        = 53
@@ -169,7 +186,7 @@ resource "hcloud_firewall" "srv11_fw6_base" {
   }
 
   rule {
-    description = "DNS"
+    description = "dns.srv11 - DNS"
     direction   = "out"
     protocol    = "udp"
     port        = 53
@@ -179,7 +196,7 @@ resource "hcloud_firewall" "srv11_fw6_base" {
   }
 
   rule {
-    description = "HTTP"
+    description = "proxy.srv11 - HTTP"
     direction   = "out"
     protocol    = "tcp"
     port        = 80
@@ -187,12 +204,29 @@ resource "hcloud_firewall" "srv11_fw6_base" {
       local.ipv6_everywhere
     ]
   }
-
   rule {
-    description = "HTTPS"
+    description = "proxy.srv11 - HTTPS"
     direction   = "out"
     protocol    = "tcp"
     port        = 443
+    destination_ips = [
+      local.ipv6_everywhere
+    ]
+  }
+  rule {
+    description = "proxy.srv11 - 8080"
+    direction   = "out"
+    protocol    = "tcp"
+    port        = 8080
+    destination_ips = [
+      local.ipv6_everywhere
+    ]
+  }
+  rule {
+    description = "proxy.srv11 - 8443"
+    direction   = "out"
+    protocol    = "tcp"
+    port        = 8443
     destination_ips = [
       local.ipv6_everywhere
     ]
@@ -204,7 +238,7 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
 
   # IN
   rule {
-    description = "SMTP"
+    description = "mx.srv11 - SMTP"
     direction   = "in"
     protocol    = "tcp"
     port        = 25
@@ -212,9 +246,8 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
       local.ipv4_everywhere
     ]
   }
-
   rule {
-    description = "SMTPS"
+    description = "mx.srv11 - SMTPS"
     direction   = "in"
     protocol    = "tcp"
     port        = 465
@@ -224,7 +257,7 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
   }
 
   rule {
-    description = "SMTP MSA"
+    description = "msa.srv11 - SMTP MSA"
     direction   = "in"
     protocol    = "tcp"
     port        = 587
@@ -234,7 +267,7 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
   }
 
   rule {
-    description = "POP3"
+    description = "mda.srv11 - POP3"
     direction   = "in"
     protocol    = "tcp"
     port        = 110
@@ -242,9 +275,8 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
       local.ipv4_everywhere
     ]
   }
-
   rule {
-    description = "POP3S"
+    description = "mda.srv11 - POP3S"
     direction   = "in"
     protocol    = "tcp"
     port        = 995
@@ -254,17 +286,7 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
   }
 
   rule {
-    description = "IMAPS"
-    direction   = "in"
-    protocol    = "tcp"
-    port        = 993
-    source_ips = [
-      local.ipv4_everywhere
-    ]
-  }
-
-  rule {
-    description = "DNS"
+    description = "dns-ext.srv11 - DNS"
     direction   = "in"
     protocol    = "tcp"
     port        = 53
@@ -272,9 +294,8 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
       local.ipv4_everywhere
     ]
   }
-
   rule {
-    description = "DNS"
+    description = "dns-ext.srv11 - DNS"
     direction   = "in"
     protocol    = "udp"
     port        = 53
@@ -284,7 +305,7 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
   }
 
   rule {
-    description = "HTTP"
+    description = "www.srv11 - HTTP"
     direction   = "in"
     protocol    = "tcp"
     port        = 80
@@ -292,9 +313,8 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
       local.ipv4_everywhere
     ]
   }
-
   rule {
-    description = "HTTPS"
+    description = "wwww.srv11 - HTTPS"
     direction   = "in"
     protocol    = "tcp"
     port        = 443
@@ -303,19 +323,9 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
     ]
   }
 
-  # rule {
-  #   description = "nonnocamX"
-  #   direction   = "in"
-  #   protocol    = "tcp"
-  #   port        = "48088-48554"
-  #   source_ips = [
-  #     local.ipv4_everywhere
-  #   ]
-  # }
-
   # OUT
   rule {
-    description = "SMTP"
+    description = "mta.srv11 - SMTP"
     direction   = "out"
     protocol    = "tcp"
     port        = 25
@@ -323,9 +333,8 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
       local.ipv4_everywhere
     ]
   }
-
   rule {
-    description = "SMTPS"
+    description = "mta.srv11 - SMTPS"
     direction   = "out"
     protocol    = "tcp"
     port        = 465
@@ -335,7 +344,7 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
   }
 
   rule {
-    description = "Razor"
+    description = "no-spam.srv11 - Razor"
     direction   = "out"
     protocol    = "tcp"
     port        = 2703
@@ -343,9 +352,8 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
       local.ipv4_everywhere
     ]
   }
-
   rule {
-    description = "Pyzor"
+    description = "no-spam.srv11 - Pyzor"
     direction   = "out"
     protocol    = "tcp"
     port        = 24441
@@ -354,7 +362,7 @@ resource "hcloud_firewall" "srv11_fw4_servizi" {
     ]
   }
   rule {
-    description = "Pyzor"
+    description = "no-spam.srv11 - Pyzor"
     direction   = "out"
     protocol    = "udp"
     port        = 24441
@@ -369,7 +377,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
 
   # IN
   rule {
-    description = "SMTP"
+    description = "mx.srv11 - SMTP"
     direction   = "in"
     protocol    = "tcp"
     port        = 25
@@ -377,9 +385,8 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
       local.ipv6_everywhere
     ]
   }
-
   rule {
-    description = "SMTP"
+    description = "mx.srv11 - SMTP"
     direction   = "in"
     protocol    = "tcp"
     port        = 465
@@ -389,7 +396,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
   }
 
   rule {
-    description = "SMTP MSA"
+    description = "msa.srv11 - SMTP MSA"
     direction   = "in"
     protocol    = "tcp"
     port        = 587
@@ -399,7 +406,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
   }
 
   rule {
-    description = "POP3"
+    description = "mda.srv11 - POP3"
     direction   = "in"
     protocol    = "tcp"
     port        = 110
@@ -407,9 +414,8 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
       local.ipv6_everywhere
     ]
   }
-
   rule {
-    description = "POP3S"
+    description = "mda.srv11 - POP3S"
     direction   = "in"
     protocol    = "tcp"
     port        = 995
@@ -419,17 +425,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
   }
 
   rule {
-    description = "IMAPS"
-    direction   = "in"
-    protocol    = "tcp"
-    port        = 993
-    source_ips = [
-      local.ipv6_everywhere
-    ]
-  }
-
-  rule {
-    description = "DNS"
+    description = "dns-ext.srv11 - DNS"
     direction   = "in"
     protocol    = "tcp"
     port        = 53
@@ -437,9 +433,8 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
       local.ipv6_everywhere
     ]
   }
-
   rule {
-    description = "DNS"
+    description = "dns-ext.srv11 - DNS"
     direction   = "in"
     protocol    = "udp"
     port        = 53
@@ -449,7 +444,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
   }
 
   rule {
-    description = "HTTP"
+    description = "www.srv11 - HTTP"
     direction   = "in"
     protocol    = "tcp"
     port        = 80
@@ -457,9 +452,8 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
       local.ipv6_everywhere
     ]
   }
-
   rule {
-    description = "HTTPS"
+    description = "www.srv11 - HTTPS"
     direction   = "in"
     protocol    = "tcp"
     port        = 443
@@ -470,7 +464,7 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
 
   # OUT
   rule {
-    description = "SMTP"
+    description = "mta.srv11 - SMTP"
     direction   = "out"
     protocol    = "tcp"
     port        = 25
@@ -478,9 +472,8 @@ resource "hcloud_firewall" "srv11_fw6_servizi" {
       local.ipv6_everywhere
     ]
   }
-
   rule {
-    description = "SMTP"
+    description = "mta.srv11 - SMTP"
     direction   = "out"
     protocol    = "tcp"
     port        = 465
@@ -495,7 +488,7 @@ resource "hcloud_firewall" "srv11_fw6_adm" {
 
   # IN
   rule {
-    description = "PostgreSQL"
+    description = "db.srv11 - PostgreSQL"
     direction   = "in"
     protocol    = "tcp"
     port        = 5432
@@ -505,7 +498,7 @@ resource "hcloud_firewall" "srv11_fw6_adm" {
   }
 
   rule {
-    description = "NTP"
+    description = "tempo.srv11 - NTP"
     direction   = "in"
     protocol    = "udp"
     port        = 123
@@ -525,7 +518,7 @@ resource "hcloud_firewall" "srv11_fw6_adm" {
 
   # OUT
   rule {
-    description = "NTP"
+    description = "tempo.srv11 - NTP"
     direction   = "out"
     protocol    = "udp"
     port        = 123
@@ -534,7 +527,7 @@ resource "hcloud_firewall" "srv11_fw6_adm" {
     ]
   }
   rule {
-    description = "StorageBox"
+    description = "srv11 - StorageBox"
     direction   = "out"
     protocol    = "tcp"
     port        = 23
