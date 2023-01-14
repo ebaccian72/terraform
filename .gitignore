@@ -13,7 +13,6 @@
 .terraform/
 .viminfo
 .wget-hsts
-azure/
 hcloud
 terraform.tfstate*
 .vault-token
